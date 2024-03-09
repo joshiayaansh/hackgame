@@ -74,6 +74,7 @@ while icounter < 3:
         print("Correct!")
         break
     else: 
+        icounter = icounter + 1
         print("Incorrect! Hint: it is a meme.")
 
 icounter = 0
@@ -85,11 +86,12 @@ while icounter < 3:
         print("Correct!")
         break
     else:
+        icounter = icounter + 1
         print("Incorrect! Hint: it is an emoticon.")
 if point_counter > 2:
     print("Good job!")
 if point_counter < 1:
     print("It's okay, we'll get there next time.")
-print("Your points for the first stage:")
+print("Your points for the game:")
 print(point_counter)
-print("Entering second system! Let's go!")
+print("Day 2 will be unlocked soon!")
