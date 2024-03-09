@@ -39,3 +39,5 @@ class System:
     password2 = ("querty123")
     password3 = ("avf325f")
 print("Oh no! Hackers are trying to get into your system and have locked your computer! Guess the passwords for all three systems to win!")
+
+passwordguess = input("")
