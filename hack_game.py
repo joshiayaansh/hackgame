@@ -1,4 +1,5 @@
-import sqlite3
+import sqlite3 
+
 print("Welcome to the hacking terminal portal!")
 print("setting you up... ready!")
 name = input("Enter user name:")
@@ -33,4 +34,8 @@ conn.commit()
 # We can also close the connection if we are done with it.
 # Just be sure any changes have been committed or they will be lost.
 conn.close()
-
+class System:
+    password = ("8y573yf")
+    password2 = ("querty123")
+    password3 = ("avf325f")
+print("Oh no! Hackers are trying to get into your system and have locked your computer! Guess the passwords for all three systems to win!")
