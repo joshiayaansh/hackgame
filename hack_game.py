@@ -14,7 +14,7 @@ print("Welcome to the hacking terminal portal!")
 print("setting you up... ready!")
 name = input("Enter user name:")
 password = input("Enter a password to keep your account safe:")
-login = input("Enter your login:")
+login = input("Enter your login by using your username space password:")
   # Assign the input to a variable
 if login == (name + " " + password):
     print("Successful login.")
