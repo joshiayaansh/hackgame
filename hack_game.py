@@ -30,30 +30,35 @@ else:
     print("Unsucessful login.")
     exit_game()
 
-# Connect to SQLite database in a file
-conn = sqlite3.connect('name_password.db')
+try:
+    # Connect to SQLite database in a file
+    conn = sqlite3.connect('name_password.db')
 
-# Create a cursor
-c = conn.cursor()
+    # Create a cursor
+    c = conn.cursor()
 
-# Create table
-c.execute('''CREATE TABLE IF NOT EXISTS users
-             (username text, password text)''')
-salt = os.urandom(16)
+    # Create table
+    c.execute('''CREATE TABLE IF NOT EXISTS users
+                 (username text, password text, salt blob)''')
+    salt = os.urandom(16)
 
-hashed_name = hashlib.sha256(name.encode()).hexdigest()
-hashed_password = hashlib.pbkdf2_hmac('sha256', password.encode(), salt, 100000)
+    hashed_name = hashlib.sha256(name.encode()).hexdigest()
+    hashed_password = hashlib.pbkdf2_hmac('sha256', password.encode(), salt, 100000)
 
+    # Insert a row of data
+    c.execute("INSERT INTO users VALUES (?, ?, ?)", (hashed_name, hashed_password, salt))
 
-# Insert a row of data
-c.execute("INSERT INTO users VALUES (?, ?)", (hashed_name, hashed_password))
+    # Save (commit) the changes
+    conn.commit()
 
-# Save (commit) the changes
-conn.commit()
+except Exception as e:
+    print(f"An error occurred: {e}")
 
-# We can also close the connection if we are done with it.
-# Just be sure any changes have been committed or they will be lost.
-conn.close()
+finally:
+    # We can also close the connection if we are done with it.
+    # Just be sure any changes have been committed or they will be lost.
+    conn.close()
+
 passwordguessing = ("minecraft")
 password2 = ("querty123")
 password3 = (":)")
