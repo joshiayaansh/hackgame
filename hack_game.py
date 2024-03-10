@@ -1,6 +1,7 @@
 import sqlite3 
 import sys
 import hashlib
+import os
 icounter = 0
 point_counter = 0
 def exit_game():
@@ -38,9 +39,11 @@ c = conn.cursor()
 # Create table
 c.execute('''CREATE TABLE IF NOT EXISTS users
              (username text, password text)''')
+salt = os.urandom(16)
 
 hashed_name = hashlib.sha256(name.encode()).hexdigest()
-hashed_password = hashlib.sha256(password.encode()).hexdigest()
+hashed_password = hashlib.pbkdf2_hmac('sha256', password.encode(), salt, 100000)
+
 
 # Insert a row of data
 c.execute("INSERT INTO users VALUES (?, ?)", (hashed_name, hashed_password))
