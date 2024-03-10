@@ -3,13 +3,16 @@ import sys
 import hashlib
 icounter = 0
 point_counter = 0
-
 def exit_game():
     sys.exit()
+
 def new_point():
-    point_counter + 5
+    global point_counter
+    point_counter += 5
+
 def del_point():
-    point_counter - 1
+    global point_counter
+    point_counter -= 1
 print("Welcome to the hacking terminal portal!")
 print("setting you up... ready!")
 name = input("Enter user name:")
@@ -58,10 +61,11 @@ print("In!")
 while icounter < 3:
     passwordguess = input("Guess the first password: ")
     if passwordguess == (passwordguessing):
-        point_counter + 1
+        new_point()
         print("Correct!")
         break
     else: 
+        del_point()
         icounter = icounter + 1
         print("Incorrect! Hint: it is the name of a popular video game.")
 
@@ -70,10 +74,11 @@ icounter = 0
 while icounter < 3:
     passwordguess2 = input("Guess the second password:")
     if passwordguess2 == (password2):
-        point_counter + 1
+        new_point()
         print("Correct!")
         break
     else: 
+        del_point()
         icounter = icounter + 1
         print("Incorrect! Hint: it is a meme.")
 
@@ -82,10 +87,11 @@ icounter = 0
 while icounter < 3:
     passwordguess3 = input("Guess the third password:")
     if passwordguess3 == (password3):
-        point_counter + 1
+        new_point()
         print("Correct!")
         break
     else:
+        del_point()
         icounter = icounter + 1
         print("Incorrect! Hint: it is an emoticon.")
 if point_counter > 2:
@@ -93,5 +99,5 @@ if point_counter > 2:
 if point_counter < 1:
     print("It's okay, we'll get there next time.")
 print("Your points for the game:")
-print(point_counter)
+print(point_counter + " " + "points")
 print("Day 2 will be unlocked soon!")
