@@ -102,5 +102,5 @@ if point_counter > 2:
 if point_counter < 1:
     print("It's okay, we'll get there next time.")
 print("Your points for the game:")
-print(point_counter + " " + "points")
+print(point_counter)
 print("Day 2 will be unlocked soon!")
