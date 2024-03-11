@@ -109,3 +109,4 @@ if point_counter < 1:
 print("Your points for the game:")
 print(point_counter)
 print("Day 2 will be unlocked soon!")
+
