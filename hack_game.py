@@ -41,12 +41,13 @@ try:
     c.execute('''CREATE TABLE IF NOT EXISTS users
                  (username text, password text, salt blob)''')
     salt = os.urandom(16)
+    
 
-    hashed_name = hashlib.sha256(name.encode()).hexdigest()
+    hashed_username = hashlib.pbkdf2_hmac('sha256', name.encode(), salt, 100000)
     hashed_password = hashlib.pbkdf2_hmac('sha256', password.encode(), salt, 100000)
 
     # Insert a row of data
-    c.execute("INSERT INTO users VALUES (?, ?, ?)", (hashed_name, hashed_password, salt))
+    c.execute("INSERT INTO users VALUES (?, ?, ?)", (hashed_username, hashed_password, salt))
 
     # Save (commit) the changes
     conn.commit()
