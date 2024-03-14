@@ -1,4 +1,4 @@
-('C:\\Users\\adven\\Desktop\\hackgame\\build\\hack_game\\PYZ-00.pyz',
+('C:\\Users\\adven\\Documents\\hackgame\\build\\hack_game\\PYZ-00.pyz',
  [('__future__',
    'C:\\Users\\adven\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\__future__.py',
    'PYMODULE'),
