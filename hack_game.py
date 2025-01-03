@@ -60,9 +60,10 @@ finally:
     # Just be sure any changes have been committed or they will be lost.
     conn.close()
 class Question:
-    def ask(self, password, hint):
+    def ask(self, password, hint, num):
+        global icounter
         while icounter < 3:
-           passwordguess = input("Guess the first password: ")
+           passwordguess = input(f"Guess the {num} password: ")
            if passwordguess == (password):
               new_point()
               print("Correct!")
@@ -78,13 +79,14 @@ question = Question()
 print("Oh no! Hackers are trying to get into your system and have locked your computer! Guess the passwords for all three systems to win!")
 print("Entering system 1...")
 print("In!")
-question.ask(password1, "It's a popular video game.")
+num = "first"
+question.ask(password1, "It's a popular video game.", num)
 icounter = 0
-
-question.ask(password2, "It's a meme about passwords.")
+num = "second"
+question.ask(password2, "It's a meme about passwords.", num)
 icounter = 0
-
-question.ask(password3, "HAL.DLL not found!")
+num = "third"
+question.ask(password3, "HAL.DLL not found!", num)
 icounter = 0
 if point_counter > 2:
     print("Good job!")
