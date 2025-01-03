@@ -59,50 +59,33 @@ finally:
     # We can also close the connection if we are done with it.
     # Just be sure any changes have been committed or they will be lost.
     conn.close()
-
-passwordguessing = ("minecraft")
-password2 = ("querty123")
-password3 = (":)")
+class Question:
+    def ask(password, hint):
+        while icounter < 3:
+           passwordguess = input("Guess the first password: ")
+           if passwordguess == (password):
+              new_point()
+              print("Correct!")
+              break
+           else: 
+              del_point()
+              print(hint)
+              icounter = icounter + 1
+password1 = ("minecraft")
+password2 = ("quertyuiop1234")
+password3 = (":(")
+question = Question()
 print("Oh no! Hackers are trying to get into your system and have locked your computer! Guess the passwords for all three systems to win!")
 print("Entering system 1...")
 print("In!")
-
-while icounter < 3:
-    passwordguess = input("Guess the first password: ")
-    if passwordguess == (passwordguessing):
-        new_point()
-        print("Correct!")
-        break
-    else: 
-        del_point()
-        icounter = icounter + 1
-        print("Incorrect! Hint: it is the name of a popular video game.")
-
+question.ask(password1, "It's a popular video game.")
 icounter = 0
 
-while icounter < 3:
-    passwordguess2 = input("Guess the second password:")
-    if passwordguess2 == (password2):
-        new_point()
-        print("Correct!")
-        break
-    else: 
-        del_point()
-        icounter = icounter + 1
-        print("Incorrect! Hint: it is a meme.")
-
+question.ask(password2, "It's a meme about passwords.")
 icounter = 0
 
-while icounter < 3:
-    passwordguess3 = input("Guess the third password:")
-    if passwordguess3 == (password3):
-        new_point()
-        print("Correct!")
-        break
-    else:
-        del_point()
-        icounter = icounter + 1
-        print("Incorrect! Hint: it is an emoticon.")
+question.ask(password3, "HAL.DLL not found!")
+icounter = 0
 if point_counter > 2:
     print("Good job!")
 if point_counter < 1:
