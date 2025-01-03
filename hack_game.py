@@ -60,7 +60,7 @@ finally:
     # Just be sure any changes have been committed or they will be lost.
     conn.close()
 class Question:
-    def ask(password, hint):
+    def ask(self, password, hint):
         while icounter < 3:
            passwordguess = input("Guess the first password: ")
            if passwordguess == (password):
@@ -93,3 +93,6 @@ if point_counter < 1:
 print("Your points for the game:")
 print(point_counter)
 print("Day 2 has been unlocked!")
+print("Welcome to hackGAME 2.0!")
+print("What's new: you can play the new classic levels, the new gamemode, or you can make levels!")
+print("Type 1 to play classic levels!\n Type 2 to play the new gamemode!,\n or Type 3 to make levels!")
