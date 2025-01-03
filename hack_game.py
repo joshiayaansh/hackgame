@@ -1,9 +1,13 @@
-import sqlite3 
+import sqlite3
 import sys
 import hashlib
 import os
+
+# Globals for game
 icounter = 0
 point_counter = 0
+
+# Functions for the game
 def exit_game():
     sys.exit()
 
@@ -14,87 +18,126 @@ def new_point():
 def del_point():
     global point_counter
     point_counter -= 1
-print("Welcome to the hacking terminal portal!")
-print("setting you up... ready!")
-name = input("Enter user name:")
-password = input("Enter a password to keep your account safe:")
-login = input("Enter your login by using your username space password:")
-  # Assign the input to a variable
-if login == (name + " " + password):
-    print("Successful login.")
-elif login == name:
-    print("You only entered the username. Please enter username and password.")
-elif login == password: 
-    print("You only entered the password. Please enter username and password.")
-else: 
-    print("Unsucessful login.")
-    exit_game()
 
-try:
-    # Connect to SQLite database in a file
+def hash_with_salt(value, salt):
+    """Hashes a value with a given salt using SHA-256."""
+    return hashlib.pbkdf2_hmac('sha256', value.encode(), salt, 100000)
+
+def initialize_db():
+    """Creates the database and users table if they don't exist."""
     conn = sqlite3.connect('name_password.db')
-
-    # Create a cursor
     c = conn.cursor()
-
-    # Create table
-    c.execute('''CREATE TABLE IF NOT EXISTS users
-                 (username hash, password hash, salt blob)''')
-    salt = os.urandom(16)
-    
-
-    hashed_username = hashlib.pbkdf2_hmac('sha256', name.encode(), salt, 100000)
-    hashed_password = hashlib.pbkdf2_hmac('sha256', password.encode(), salt, 100000)
-
-    # Insert a row of data
-    c.execute("INSERT INTO users VALUES (?, ?, ?)", (hashed_username, hashed_password, salt))
-
-    # Save (commit) the changes
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS users (
+            username TEXT PRIMARY KEY,
+            password_hash BLOB,
+            salt BLOB
+        )
+    ''')
     conn.commit()
-
-except Exception as e:
-    print(f"An error occurred: {e}")
-
-finally:
-    # We can also close the connection if we are done with it.
-    # Just be sure any changes have been committed or they will be lost.
     conn.close()
+
+def check_if_users_exist():
+    """Checks if there are any users in the database."""
+    conn = sqlite3.connect('name_password.db')
+    c = conn.cursor()
+    c.execute("SELECT COUNT(*) FROM users")
+    count = c.fetchone()[0]
+    conn.close()
+    return count > 0
+
+def register_user(username, password):
+    """Registers a new user with a salted and hashed password."""
+    salt = os.urandom(16)
+    password_hash = hash_with_salt(password, salt)
+    
+    conn = sqlite3.connect('name_password.db')
+    c = conn.cursor()
+    try:
+        c.execute("INSERT INTO users VALUES (?, ?, ?)", (username, password_hash, salt))
+        conn.commit()
+        print("User registered successfully.")
+    except sqlite3.IntegrityError:
+        print("Username already exists!")
+    finally:
+        conn.close()
+
+def verify_user(username, password):
+    """Verifies a username and password against the database."""
+    conn = sqlite3.connect('name_password.db')
+    c = conn.cursor()
+    c.execute("SELECT password_hash, salt FROM users WHERE username = ?", (username,))
+    result = c.fetchone()
+    conn.close()
+
+    if not result:
+        return False
+    
+    stored_hash, salt = result
+    input_hash = hash_with_salt(password, salt)
+    return stored_hash == input_hash
+
+# Password guessing game
 class Question:
     def ask(self, password, hint, num):
         global icounter
         while icounter < 3:
-           passwordguess = input(f"Guess the {num} password: ")
-           if passwordguess == (password):
-              new_point()
-              print("Correct!")
-              break
-           else: 
-              del_point()
-              print(hint)
-              icounter = icounter + 1
-password1 = ("minecraft")
-password2 = ("quertyuiop1234")
-password3 = (":(")
-question = Question()
+            passwordguess = input(f"Guess the {num} password: ")
+            if passwordguess == password:
+                new_point()
+                print("Correct!")
+                break
+            else: 
+                del_point()
+                print(hint)
+                icounter += 1
+
+# Main program
+initialize_db()
+
+if check_if_users_exist():
+    print("Welcome back!")
+    login_username = input("Enter your username: ")
+    login_password = input("Enter your password: ")
+    
+    if verify_user(login_username, login_password):
+        print("Login successful!")
+    else:
+        print("Invalid username or password.")
+        exit_game()
+else:
+    print("No users found. Let's create your account!")
+    name = input("Enter your username: ")
+    password = input("Enter a password to keep your account safe: ")
+    register_user(name, password)
+
+# The guessing game begins!
+print("\nWelcome to the hacking terminal portal!")
 print("Oh no! Hackers are trying to get into your system and have locked your computer! Guess the passwords for all three systems to win!")
-print("Entering system 1...")
-print("In!")
+question = Question()
+
+password1 = "minecraft"
+password2 = "quertyuiop1234"
+password3 = ":("
+
+print("\nEntering system 1...")
 num = "first"
 question.ask(password1, "It's a popular video game.", num)
 icounter = 0
+
+print("\nEntering system 2...")
 num = "second"
 question.ask(password2, "It's a meme about passwords.", num)
 icounter = 0
+
+print("\nEntering system 3...")
 num = "third"
 question.ask(password3, "HAL.DLL not found!", num)
-icounter = 0
+
+# Show results
 if point_counter > 2:
-    print("Good job!")
-if point_counter < 1:
-    print("It's okay, we'll get there next time.")
-print("Your points for the game:")
-print(point_counter)
-print("Day 2 has been unlocked!")
-print("Welcome to hackGAME 2.0!")
-print("What's new: you can play the new classic levels, the new gamemode, or you can make levels!")
-print("Type 1 to play classic levels!\n Type 2 to play the new gamemode!,\n or Type 3 to make levels!")
+    print("\nGood job!")
+else:
+    print("\nIt's okay, we'll get there next time.")
+
+print(f"Your points for the game: {point_counter}")
