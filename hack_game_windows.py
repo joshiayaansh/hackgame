@@ -133,7 +133,18 @@ icounter = 0
 
 num = "third"
 question.ask(password3, "HAL.DLL not found!", num)
-
+print("Entering system 2\n")
+password4 = "iloveyou.doc.vbs"
+password5 = "wannacry.exe"
+password6 = "whoami"
+num = "fourth"
+question.ask(password4, "An old worm from the 1990s.", num)
+icounter = 0
+num = "fifth"
+question.ask(password5, "A ransomware from 2020.", num)
+icounter = 0
+num = "sixth"
+question.ask(password6, "A command in Windows for checking the current user.", num)
 # Show results
 if point_counter > 2:
     print("\nGood job!")
@@ -141,21 +152,5 @@ else:
     print("\nIt's okay, we'll get there next time.")
 
 print(f"Your points for the game: {point_counter}")
-print("Welcome to hack_game 2.0!! In 2.0 you can play new classic levels \n, or play the new gamemode!")
-choice = input("Press 1 to play new classics\n, or press 2 to play the new gamemode!")
-if choice == "1":
-    print("Entering system 2\n")
-    password4 = "iloveyou.doc.vbs"
-    password5 = "wannacry.exe"
-    password6 = "whoami"
-    num = "fourth"
-    question.ask(password4, "An old worm from the 1990s.", num)
-    icounter = 0
-    num = "fifth"
-    question.ask(password5, "A ransomware from 2020.", num)
-    icounter = 0
-    num = "sixth"
-    question.ask(password6, "A command in Windows for checking the current user.", num)
-elif choice == "2":
-    subprocess.run(["UPDATE.exe"])
+subprocess.run(["UPDATE.exe"])
 print("Thanks for playing!")
